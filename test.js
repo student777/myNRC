@@ -1,4 +1,4 @@
-var url = "test1.json";
+var url = "test2.json";
 req(url, drawPath);
 
 function drawPath(res) {
@@ -11,11 +11,14 @@ function drawPath(res) {
         center: new naver.maps.LatLng(initLat, initLng),
         zoom: 15,
     });
+
+    // Set marker
     var marker = new naver.maps.Marker({
         position: new naver.maps.LatLng(initLat, initLng),
         map: map
     });
     
+    // Set path
     var path = [];
     for (var i=0; i < length; i++) {
         path.push(new naver.maps.LatLng(lat_list[i].value, lng_list[i].value));
@@ -24,7 +27,20 @@ function drawPath(res) {
         map: map,
         path: path,
     });
-    console.log()
+
+
+    // Set infoWindow
+    var infoWindow = new naver.maps.InfoWindow({
+        content: [
+            '거리:',
+            res.summaries[0].value.toFixed(2),
+            '시간:',
+            (res.active_duration_ms / (60 * 1000)).toFixed(2),
+            '페이스:',
+            res.summaries[9].value.toFixed(2),
+        ].join(' ')
+    });
+    infoWindow.open(map, new naver.maps.LatLng(initLat, initLng));
 }
 
 function req(url, callback) {
