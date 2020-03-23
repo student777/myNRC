@@ -1,19 +1,30 @@
 var url = "test1.json";
-req(url, draw);
+req(url, drawPath);
 
-function draw(res) {
-    var initLat = res.metrics[6].values[0].value;
-    var initLng = res.metrics[7].values[0].value;
-    console.log(initLat, initLng);
+function drawPath(res) {
+    var lat_list = res.metrics[6].values;
+    var lng_list = res.metrics[7].values;
+    var length = lat_list.length;
+    var initLat = lat_list[0].value;
+    var initLng = lng_list[0].value;
     var map = new naver.maps.Map('map', {
         center: new naver.maps.LatLng(initLat, initLng),
-        zoom: 17
+        zoom: 15,
     });
     var marker = new naver.maps.Marker({
         position: new naver.maps.LatLng(initLat, initLng),
         map: map
     });
     
+    var path = [];
+    for (var i=0; i < length; i++) {
+        path.push(new naver.maps.LatLng(lat_list[i].value, lng_list[i].value));
+    }
+    var polyline = new naver.maps.Polyline({
+        map: map,
+        path: path,
+    });
+    console.log()
 }
 
 function req(url, callback) {
