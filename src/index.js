@@ -1,5 +1,6 @@
-var url = "test2.json";
-req(url, drawPath);
+import data from './test2.json';
+
+drawPath(data);
 
 function drawPath(res) {
     var lat_list = res.metrics[6].values;
@@ -43,14 +44,3 @@ function drawPath(res) {
     infoWindow.open(map, new naver.maps.LatLng(initLat, initLng));
 }
 
-function req(url, callback) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var myArr = JSON.parse(this.responseText);
-            callback(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-}
